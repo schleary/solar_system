@@ -7,16 +7,29 @@
 
 class SolarSystem
 
-  attr_accessor :planets, :zodiac, :name, :diameter, :moons, :distance, :formation_date, :solar_rotation_rate
+  attr_accessor :planets, :formation_date
 
-  def initialize(planets)
-    @name = planets[:name]
-    @diameter = planets[:diameter]
-    @moons = planets[:moons]
-    @distance = planets[:diameter]
-    @zodiac = planets[:zodiac]
-    @formation_date = 4600000000
-    @solar_rotation_rate = planets[:solar_rotation_rate]
+  def initialize(planets, formation_date)
+    @planets = planets
+    @formation_date = formation_date
+
+  end
+
+end
+
+
+class Planet
+
+  attr_accessor :zodiac, :name, :diameter, :moons, :distance, :solar_rotation_rate, :formation_date
+
+  def initialize(planet, formation_date)
+    @name = planet[:name]
+    @diameter = planet[:diameter]
+    @moons = planet[:moons]
+    @distance = planet[:diameter]
+    @zodiac = planet[:zodiac]
+    @solar_rotation_rate = planet[:solar_rotation_rate]
+    @formation_date = formation_date
   end
 
   # returns the local year of the planet based on it's rotation since the
@@ -103,9 +116,27 @@ planets = [
 ]
 
 #main/test
+planet_objects = []
+formation_date = 4600000000
+
+#puts "What planet would you like information about?"
 planets.each do |index|
-  planet = SolarSystem.new(index)
-  puts "#{planet.name}: diameter: #{planet.diameter} kilometers, moons: #{planet.moons}, distance from the sun: #{planet.distance} kilometers, zodiacs: #{planet.zodiac}, formation date: #{planet.formation_date} years ago, and solar rotation rate: one rotation every #{planet.solar_rotation_rate} earth days."
-  puts "This planet is #{planet.local_year} years old."
-  puts ""
+  planet = Planet.new(index, formation_date)
+  planet_objects.push(planet)
 end
+
+solar_system = SolarSystem.new(planet_objects, formation_date)
+puts solar_system.inspect
+
+solar_system.planets.each do |index|
+  puts "The planet #{index.name} was formed #{solar_system.formation_date} years ago, and within the context of it's own rotation rate, it is #{index.local_year} years old."
+end
+
+
+
+# choice = gets.chomp.to_sym.capitalize
+#
+# puts "What would you like to know about #{choice} (select from: name, diameter, moons, distance, zodiac, solar rotation rate)?"
+# #att = gets.chomp.to_sym
+# puts planet.zodiac
+# puts "#{choice.att}"
