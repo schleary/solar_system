@@ -19,6 +19,12 @@ class SolarSystem
     @solar_rotation_rate = planets[:solar_rotation_rate]
   end
 
+  # returns the local year of the planet based on it's rotation since the
+  # beginning of the solar system
+  def local_year
+    @formation_date / @solar_rotation_rate
+  end
+
 end
 
 planets = [
@@ -100,5 +106,6 @@ planets = [
 planets.each do |index|
   planet = SolarSystem.new(index)
   puts "#{planet.name}: diameter: #{planet.diameter} kilometers, moons: #{planet.moons}, distance from the sun: #{planet.distance} kilometers, zodiacs: #{planet.zodiac}, formation date: #{planet.formation_date} years ago, and solar rotation rate: one rotation every #{planet.solar_rotation_rate} earth days."
+  puts "This planet is #{planet.local_year} years old."
   puts ""
 end
