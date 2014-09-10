@@ -1,10 +1,3 @@
-#Create a Planet class with a name attribute
-#Create a SolarSystem class that has an attribute "planets" that has 0-??? Planets
-#Each element with the planets Array should be a Planet object
-#Get creative! Give planets diameters, mass, moons.. whatever! Allow these attributes
-#to be set using a hash in initialize.
-require 'pp'
-
 class SolarSystem
 
   attr_accessor :planets, :formation_date
