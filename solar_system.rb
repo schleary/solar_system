@@ -3,7 +3,7 @@
 #Each element with the planets Array should be a Planet object
 #Get creative! Give planets diameters, mass, moons.. whatever! Allow these attributes
 #to be set using a hash in initialize.
-
+require 'pp'
 
 class SolarSystem
 
@@ -13,6 +13,10 @@ class SolarSystem
     @planets = planets
     @formation_date = formation_date
 
+  end
+
+  def find(planet_name)
+    @planets.find{|planet|planet.name.downcase == planet_name}
   end
 
 end
@@ -26,16 +30,35 @@ class Planet
     @name = planet[:name]
     @diameter = planet[:diameter]
     @moons = planet[:moons]
-    @distance = planet[:diameter]
+    @distance = planet[:distance]
     @zodiac = planet[:zodiac]
     @solar_rotation_rate = planet[:solar_rotation_rate]
     @formation_date = formation_date
+
   end
 
   # returns the local year of the planet based on it's rotation since the
   # beginning of the solar system
   def local_year
     @formation_date / @solar_rotation_rate
+  end
+
+  def get_info(att)
+    if att == :name
+      @name
+    elsif att == :diameter
+      @diameter
+    elsif att == :moons
+      @moons
+    elsif att == :distance
+      @distance
+    elsif att == :zodiac
+      @zodiac
+    elsif att == :solar_rotation_rate
+      @solar_rotation_rate
+    elsif att == :formation_date
+      @formation_date
+    end
   end
 
 end
@@ -119,24 +142,29 @@ planets = [
 planet_objects = []
 formation_date = 4600000000
 
-#puts "What planet would you like information about?"
+#creates new planet objects
 planets.each do |index|
   planet = Planet.new(index, formation_date)
   planet_objects.push(planet)
 end
 
+#creates new solar system object w/ planets array
 solar_system = SolarSystem.new(planet_objects, formation_date)
-puts solar_system.inspect
 
+#Utilizes local_year method, which gets the relative age of the individual planet
 solar_system.planets.each do |index|
   puts "The planet #{index.name} was formed #{solar_system.formation_date} years ago, and within the context of it's own rotation rate, it is #{index.local_year} years old."
 end
 
+print "Which planet would you like to know about? ("
+planet_objects.each do |index|
+  print " #{index.name} "
+end
+puts ")"
+choice = gets.chomp.downcase
 
 
-# choice = gets.chomp.to_sym.capitalize
-#
-# puts "What would you like to know about #{choice} (select from: name, diameter, moons, distance, zodiac, solar rotation rate)?"
-# #att = gets.chomp.to_sym
-# puts planet.zodiac
-# puts "#{choice.att}"
+puts "What would you like to know about #{choice}? (select from: diameter, moons, distance, zodiac, solar rotation rate)"
+att = gets.chomp.to_sym
+
+puts "The #{att} of the planet #{choice} is #{solar_system.find(choice).get_info(att)}"
